@@ -6,6 +6,10 @@ manifest:
       url-base: https://github.com/kumamuk-git
     - name: caksoylar  # <-- RGB LED
       url-base: https://github.com/caksoylar
+    - name: oleksandrmaslov  # <-- Pointing Acceleration
+      url-base: https://github.com/oleksandrmaslov
+    - name: zettaface  # <-- Input Processor Keybind
+      url-base: https://github.com/zettaface
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -17,5 +21,11 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: v0.3-branch
+    - name: zmk-pointing-acceleration
+      remote: oleksandrmaslov
+      revision: main
+    - name: zmk-input-processor-keybind
+      remote: zettaface
+      revision: main
   self:
     path: config

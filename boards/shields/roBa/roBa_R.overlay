@@ -1,4 +1,8 @@
 #include "roBa.dtsi"
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <behaviors/input_gestures_accel.dtsi>
+#include <input/processors/zmk-input-processor-keybind.dtsi>
 
 &default_transform {
     col-offset = <6>;
@@ -14,12 +18,56 @@
             ;
 };
 
+&pointer_accel {
+    input-type = <INPUT_EV_REL>;
+    track-remainders;
+    min-factor = <180>;
+    max-factor = <800>;
+    speed-threshold = <700>;
+    speed-max = <800>;
+    acceleration-exponent = <2>;
+};
+
 / {
+  zip_keybind_page: zip_keybind_page {
+    compatible = "zmk,input-processor-keybind";
+    #input-processor-cells = <0>;
+    bindings = <&none>, <&none>, <&kp PG_UP>, <&kp PG_DN>;
+    mode = <1>;
+    tick = <40>;
+  };
+
     trackball_listener {
         status = "okay";
         compatible = "zmk,input-listener";
         device = <&trackball>;
+
+        input-processors =
+            <&pointer_accel>;
+
+        arrow {
+            layers = <1>;
+            input-processors = <&zip_keybind_keys>;
+            process-next;
+        };
+
+        page {
+            layers = <2>;
+            input-processors = <&zip_keybind_page>;
+            process-next;
+        };
+
+        prevent-move {
+            layers = <1 2>;
+            input-processors = <&zip_xy_scaler 0 1>;
+        };
     };
+};
+
+&zip_keybind_keys {
+    bindings = <&kp RIGHT>, <&kp LEFT>, <&kp UP>, <&kp DOWN>;
+    mode = <1>;
+    tick = <40>;
 };
 
 &pinctrl {
@@ -57,5 +105,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        scroll-layers = <3>;
     };
 };
+
