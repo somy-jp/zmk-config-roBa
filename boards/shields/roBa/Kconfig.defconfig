@@ -20,3 +20,13 @@ config ZMK_SPLIT
     default y
 
 endif
+
+if SHIELD_ROBA_R || SHIELD_ROBA_L
+
+config RGBLED_WIDGET_BATTERY_LEVEL_HIGH
+    default 30
+
+config RGBLED_WIDGET_BATTERY_LEVEL_CRITICAL
+    default 10
+
+endif
